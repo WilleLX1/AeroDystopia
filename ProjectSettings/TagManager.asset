@@ -8,6 +8,7 @@ TagManager:
   - Spaceship
   - Pickup
   - Control
+  - ShipDoor
   layers:
   - Default
   - TransparentFX

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GenerateMap : MonoBehaviour
@@ -20,17 +18,22 @@ public class GenerateMap : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void InstantiateRandomTile(int x, int y) {
+        // Choose a random tile type based on some probabilities
+        float random = Random.value;
+        GameObject tilePrefab;
+        if (random < 0.8) {
+            // 80% chance of a normal tile
+            tilePrefab = tilePrefabs[0];
+        } else if (random < 0.9) {
+            // 10% chance of a wall tile
+            tilePrefab = tilePrefabs[1];
+        } else {
+            // 10% chance of a door tile
+            tilePrefab = tilePrefabs[2];
+        }
 
-    void InstantiateRandomTile(int x, int y)
-    {
-        int randomIndex = Random.Range(0, tilePrefabs.Length);
-        GameObject randomTilePrefab = tilePrefabs[randomIndex];
-        Vector3 position = new Vector3(x, 0, y);
-        Instantiate(randomTilePrefab, position, Quaternion.identity);
+        Vector3 position = new Vector3(y, 0, x); // Swap x and y
+        Instantiate(tilePrefab, position, Quaternion.identity);
     }
 }

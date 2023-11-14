@@ -16,7 +16,10 @@ public class Interactable : MonoBehaviour
     private MovingPlatform movingPlatform;
     public float shipSpeed = 5f;
     public float shipRotationSpeed = 5f;
-    private Collider collider;
+    new private Collider collider;
+    [Header("Ship Door Control")]
+    public GameObject Door;
+
 
     // Start is called before the first frame update
     void Start()
@@ -134,6 +137,19 @@ public class Interactable : MonoBehaviour
                 // Get MovingPlatform.cs script from ship GameObject
                 MovingPlatform movingPlatform = ship.GetComponent<MovingPlatform>();
                 movingPlatform.PlayerControls = true;
+            }
+        }
+        else if (gameObject.CompareTag("ShipDoor")){
+            // Check if door is open or closed
+            if (Door.GetComponent<ShipDoorController>().isOpen)
+            {
+                // Close door
+                Door.GetComponent<ShipDoorController>().isOpen = false;
+            }
+            else if (!Door.GetComponent<ShipDoorController>().isOpen)
+            {
+                // Open door
+                Door.GetComponent<ShipDoorController>().isOpen = true;
             }
         }
     }

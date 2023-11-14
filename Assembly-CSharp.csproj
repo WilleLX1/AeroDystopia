@@ -68,6 +68,8 @@
     <Compile Include="Assets\Scripts\Ship\MovingPlatform.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Interactable.cs" />
+    <Compile Include="Assets\Scripts\MapGen\GenerateMap.cs" />
+    <Compile Include="Assets\Scripts\Ship\ShipDoorController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

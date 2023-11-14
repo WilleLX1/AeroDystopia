@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public float staminaDepletionRate = 20;
     public float staminaRecoveryRate = 10;
     public bool isSprinting = false;
+    public bool canMove = true;
     public float rotationSpeed = 700f;
     public float jumpForce = 8f;
     private Vector3 velocity;
@@ -34,62 +35,67 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        HandleMovement();
-        HandleMouseLook();
+        if (canMove){
+            HandleMovement();    
+            HandleMouseLook();
+
+            // Check if the jump button is pressed
+            if (Input.GetButtonDown("Jump") && !isJumping)
+            {
+                velocity.y = Mathf.Sqrt(jumpForce * 2f * gravity);
+                isJumping = true;
+            }
+            // Check if the crouch key is pressed
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                Vector3 position = cameraObject.transform.position;
+                position.y -= 1; // Move the camera down by 1 unit
+                cameraObject.transform.position = position;
+                speed = crouchSpeed;
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftControl))
+            {
+                Vector3 position = cameraObject.transform.position;
+                position.y += 1; // Move the camera up by 1 unit
+                cameraObject.transform.position = position;
+                speed = walkSpeed;
+            }
+            // Check if the sprint key is pressed
+            if (Input.GetKey(KeyCode.LeftShift) && stamina > 0)
+            {
+                // Run
+                speed = runSpeed;
+                stamina -= Time.deltaTime * staminaDepletionRate; // Remove the cast to int
+                isSprinting = true;
+            }
+            else
+            {
+                // Walk
+                speed = walkSpeed;
+                isSprinting = false;
+            }
+
+            // Apply the velocity
+            characterController.Move(velocity * Time.deltaTime);
+
+        }
+        
 
         // Apply gravity
         velocity.y -= gravity * Time.deltaTime;
-
-        // Check if the jump button is pressed
-        if (Input.GetButtonDown("Jump") && !isJumping)
-        {
-            velocity.y = Mathf.Sqrt(jumpForce * 2f * gravity);
-            isJumping = true;
-        }
 
         // Check if the interact key is pressed
         if (Input.GetKeyDown(KeyCode.F))
         {
             Interact();
         }
-        // Check if the crouch key is pressed
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            Vector3 position = cameraObject.transform.position;
-            position.y -= 1; // Move the camera down by 1 unit
-            cameraObject.transform.position = position;
-            speed = crouchSpeed;
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftControl))
-        {
-            Vector3 position = cameraObject.transform.position;
-            position.y += 1; // Move the camera up by 1 unit
-            cameraObject.transform.position = position;
-            speed = walkSpeed;
-        }
-        // Check if the sprint key is pressed
-        if (Input.GetKey(KeyCode.LeftShift) && stamina > 0)
-        {
-            // Run
-            speed = runSpeed;
-            stamina -= Time.deltaTime * staminaDepletionRate; // Remove the cast to int
-            isSprinting = true;
-        }
-        else
-        {
-            // Walk
-            speed = walkSpeed;
-            isSprinting = false;
-        }
+        
 
         // Recover stamina when not sprinting
         if (!isSprinting && stamina < 100)
         {
             stamina += Time.deltaTime * staminaRecoveryRate; // Remove the cast to int
         }
-
-        // Apply the velocity
-        characterController.Move(velocity * Time.deltaTime);
 
         // If the character is grounded, they are not jumping
         if (characterController.isGrounded)

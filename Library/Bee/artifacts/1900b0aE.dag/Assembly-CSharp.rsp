@@ -355,7 +355,7 @@
 "Assets/Scripts/Interactable.cs"
 "Assets/Scripts/Player/PlayerController.cs"
 "Assets/Scripts/Ship/MovingPlatform.cs"
-"Assets/Scripts/Ship/SpaceshipController.cs"
+"Assets/Scripts/Ship/ShipController.cs"
 -langversion:9.0
 
 /deterministic

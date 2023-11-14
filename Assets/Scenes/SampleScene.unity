@@ -720,7 +720,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &863825023
 RectTransform:
   m_ObjectHideFlags: 0
@@ -822,7 +822,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 884821071}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &884821074
 Camera:
   m_ObjectHideFlags: 0
@@ -1338,6 +1338,7 @@ MonoBehaviour:
   staminaDepletionRate: 20
   staminaRecoveryRate: 10
   isSprinting: 0
+  canMove: 1
   rotationSpeed: 700
   jumpForce: 3
   gravity: 30
@@ -1505,6 +1506,7 @@ GameObject:
   - component: {fileID: 1820346407}
   - component: {fileID: 1820346406}
   - component: {fileID: 1820346405}
+  - component: {fileID: 1820346408}
   m_Layer: 0
   m_Name: Enemy (2)
   m_TagString: Enemy
@@ -1598,6 +1600,33 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1820346403}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &1820346408
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820346403}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1840857141
 GameObject:
   m_ObjectHideFlags: 0
@@ -1611,6 +1640,8 @@ GameObject:
   - component: {fileID: 1840857144}
   - component: {fileID: 1840857143}
   - component: {fileID: 1840857146}
+  - component: {fileID: 1840857147}
+  - component: {fileID: 1840857148}
   m_Layer: 0
   m_Name: Control
   m_TagString: Control
@@ -1719,10 +1750,58 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHoldingItem: 0
   isControllingShip: 0
-  ship: {fileID: 1703525040}
-  shipCamera: {fileID: 884821074}
+  ship: {fileID: 1890424678}
+  shipCamera: {fileID: 884821071}
   shipSpeed: 5
   shipRotationSpeed: 5
+--- !u!65 &1840857147
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840857141}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.1, y: 1.1, z: 1.1}
+  m_Center: {x: 0, y: 0.00000011920929, z: 0}
+--- !u!54 &1840857148
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840857141}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1890424678
 GameObject:
   m_ObjectHideFlags: 0
@@ -1738,6 +1817,7 @@ GameObject:
   - component: {fileID: 1890424684}
   - component: {fileID: 1890424685}
   - component: {fileID: 1890424686}
+  - component: {fileID: 1890424687}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Spaceship
@@ -1896,6 +1976,29 @@ MonoBehaviour:
   speed: 5
   distance: 10
   followerTag: Pickup
+  AutoMove: 0
+  PlayerControls: 0
+  rotationSpeed: 45
+  isCurrentlyMovingForward: 0
+  isCurrentlyMovingBackwards: 0
+  isCurrentlyMovingRight: 0
+  isCurrentlyMovingLeft: 0
+--- !u!114 &1890424687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890424678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e30f872dd5342e5419c5eeb63cb95d8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  rotationSpeed: 3
+  verticalSpeed: 3
+  canMove: 0
 --- !u!1 &1897606028
 GameObject:
   m_ObjectHideFlags: 0

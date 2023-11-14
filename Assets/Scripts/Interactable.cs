@@ -11,16 +11,31 @@ public class Interactable : MonoBehaviour
     [Header("Ship Control")]
     public bool isControllingShip = false;
     public GameObject ship;
-    public Camera shipCamera;
+    public GameObject shipCamera;
+    private GameObject player;
+    private MovingPlatform movingPlatform;
     public float shipSpeed = 5f;
     public float shipRotationSpeed = 5f;
-    
     private Collider collider;
 
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("Started interactable with " + transform.name);
+
+        // Get playerController.cs from player gameobject
+        player = GameObject.Find("Player");
+        if (player == null)
+        {
+            Debug.LogWarning("Player gameobject not found.");
+        }
+        else {
+            // Get playerController.cs from found player
+            if (player.GetComponent<PlayerController>() == null)
+            {
+                Debug.LogWarning("PlayerController.cs not found on player gameobject.");
+            }
+        }
 
         // Check if object has a box collider
         if (GetComponent<BoxCollider>() == null)
@@ -97,7 +112,14 @@ public class Interactable : MonoBehaviour
                 // Stop controlling ship
                 isControllingShip = false;
                 // Disable ship camera
-                shipCamera.enabled = false;
+                shipCamera.SetActive(false);
+                // Activate the canMove bool on PlayerController.cs on player gameobject
+                player.GetComponent<PlayerController>().canMove = true;
+
+                // stop controlling ship
+                // Get MovingPlatform.cs script from ship GameObject
+                MovingPlatform movingPlatform = ship.GetComponent<MovingPlatform>();
+                movingPlatform.PlayerControls = false;
             }
             else if (!isControllingShip)
             {
@@ -105,17 +127,13 @@ public class Interactable : MonoBehaviour
                 // Start controlling ship
                 isControllingShip = true;
                 // Enable ship camera
-                shipCamera.enabled = true;
+                shipCamera.SetActive(true);
+                // Deactivate the canMove bool on PlayerController.cs on player gameobject
+                player.GetComponent<PlayerController>().canMove = false;
 
-                // Get the horizontal and vertical axis values
-                float horizontal = Input.GetAxis("Horizontal");
-                float vertical = Input.GetAxis("Vertical");
-
-                // Move the ship forward and backward
-                ship.transform.Translate(Vector3.forward * vertical * shipSpeed * Time.deltaTime);
-
-                // Rotate the ship left and right
-                ship.transform.Rotate(Vector3.up, horizontal * shipRotationSpeed * Time.deltaTime);
+                // Get MovingPlatform.cs script from ship GameObject
+                MovingPlatform movingPlatform = ship.GetComponent<MovingPlatform>();
+                movingPlatform.PlayerControls = true;
             }
         }
     }

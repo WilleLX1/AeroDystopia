@@ -1462,6 +1462,56 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1699592619
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1699592621}
+  - component: {fileID: 1699592620}
+  m_Layer: 0
+  m_Name: --- MAP ---
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1699592620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699592619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a427f516f94b4d34fb83b46f2badbbf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilePrefabs:
+  - {fileID: 6158820993899748369, guid: 6e608776ba6da1e43a0449b0b9c4b206, type: 3}
+  - {fileID: 6158820993899748369, guid: aa790d700063e404396a7559d403588b, type: 3}
+  - {fileID: 6158820993899748369, guid: b1160eef75f0898498591bfedcfb639c, type: 3}
+  mapWidth: 10
+  mapHeight: 10
+--- !u!4 &1699592621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699592619}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 31.6, y: 2.7127285, z: 66.46}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1703525040
 GameObject:
   m_ObjectHideFlags: 0
@@ -1974,11 +2024,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1683953268}
   speed: 5
-  distance: 10
-  followerTag: Pickup
-  AutoMove: 0
   PlayerControls: 0
   rotationSpeed: 45
+  followerTag: Pickup
+  distance: 10
+  AutoMove: 0
+  points: []
   isCurrentlyMovingForward: 0
   isCurrentlyMovingBackwards: 0
   isCurrentlyMovingRight: 0
@@ -2206,3 +2257,4 @@ SceneRoots:
   - {fileID: 1703525041}
   - {fileID: 850430072}
   - {fileID: 922427259}
+  - {fileID: 1699592621}

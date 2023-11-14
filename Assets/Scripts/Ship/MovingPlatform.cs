@@ -4,12 +4,15 @@ public class MovingPlatform : MonoBehaviour
 {
     public GameObject player; // Drag and drop the player GameObject into this field in the Inspector
     public float speed = 5f; // Adjust the speed of the platform as needed
-    public float distance = 10f; // Adjust the total distance the platform should move
-    public string followerTag = "Pickup"; // Set the tag for objects that should follow the platform
-    public bool AutoMove = true; // Set to true if the platform should move automatically
     public bool PlayerControls = false;
     public float rotationSpeed = 45f;  // Adjust the rotation speed as needed
-
+    public string followerTag = "Pickup"; // Set the tag for objects that should follow the platform
+    
+    [Header("Auto move")]
+    public float distance = 10f; // Adjust the total distance the platform should move
+    public bool AutoMove = true; // Set to true if the platform should move automatically
+    public Vector3[] points;
+    private int targetPointIndex = 0;
     
     [Header("Ship Directions")]
     public bool isCurrentlyMovingForward = false;
@@ -20,10 +23,16 @@ public class MovingPlatform : MonoBehaviour
     private Vector3 playerOffset;
     private bool movingForward = true;
     private Vector3 startPosition;
+    private float rotationDirection = 1f; // 1 for clockwise, -1 for counter-clockwise
 
     private void Start()
     {
         startPosition = transform.position;
+        points = new Vector3[4];
+        points[0] = startPosition;
+        points[1] = startPosition + new Vector3(10, 0, 0); // Adjust these values to define the rectangle
+        points[2] = startPosition + new Vector3(10, 0, 10);
+        points[3] = startPosition + new Vector3(0, 0, 10);
     }
 
     private void FixedUpdate()
@@ -38,14 +47,22 @@ public class MovingPlatform : MonoBehaviour
         }
         else if (AutoMove)
         {
-            // Calculate the movement of the platform
-            movement = speed * (movingForward ? 1 : -1) * Time.deltaTime;
+            Vector3 targetPoint = points[targetPointIndex];
+            Vector3 direction = (targetPoint - transform.position).normalized;
+            transform.position += direction * speed * Time.deltaTime;
+            transform.Rotate(Vector3.up, rotationDirection * rotationSpeed * Time.deltaTime);
+
+            if (Vector3.Distance(transform.position, targetPoint) < 0.1f)
+            {
+                targetPointIndex = (targetPointIndex + 1) % points.Length;
+                rotationDirection = -rotationDirection; // Change rotation direction at each corner
+            }
         }
 
         // If the player is on the platform, move the player with the platform while maintaining the offset
         if (playerOnPlatform)
         {
-            MoveObjectWithPlatform(player.transform);
+            //MoveObjectWithPlatform(player.transform);
         }
 
         MoveObjectsWithPlatformTagged(followerTag);
@@ -83,6 +100,14 @@ public class MovingPlatform : MonoBehaviour
             movement = speed * Time.deltaTime;
             SetMovementFlags(false, true, false, false);
         }
+        else if (Input.GetKey(KeyCode.LeftShift))
+        {
+            transform.position += Vector3.up * speed * Time.deltaTime; // Move up
+        }
+        else if (Input.GetKey(KeyCode.LeftControl))
+        {
+            transform.position += Vector3.down * speed * Time.deltaTime; // Move down
+        }
         else
         {
             SetMovementFlags(false, false, false, false);
@@ -107,7 +132,9 @@ public class MovingPlatform : MonoBehaviour
                 Collider followerCollider = follower.GetComponent<Collider>();
                 if (followerCollider != null && followerCollider.bounds.Intersects(platformCollider.bounds))
                 {
-                    MoveObjectWithPlatform(follower.transform);
+                    // Parent the object to the platform to move together
+                    follower.transform.parent = transform;
+                    //MoveObjectWithPlatform(follower.transform);
                 }
             }
         }
@@ -143,7 +170,7 @@ public class MovingPlatform : MonoBehaviour
         if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag(followerTag))
         {
             // Parent the object to the platform to move together
-            //other.transform.parent = transform;
+            other.transform.parent = transform;
 
             // If the colliding object is the player, store the offset between the player and the platform
             if (other.gameObject.CompareTag("Player"))
@@ -160,7 +187,7 @@ public class MovingPlatform : MonoBehaviour
         if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag(followerTag))
         {
             // Unparent the object to stop moving with the platform
-            //other.transform.parent = null;
+            other.transform.parent = null;
 
             // If the colliding object is the player, update the flag
             if (other.gameObject.CompareTag("Player"))

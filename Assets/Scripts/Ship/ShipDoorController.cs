@@ -42,7 +42,7 @@ public class ShipDoorController : MonoBehaviour
             if (hydralicPowerLeft > 0f){
                 hydralicPowerLeft -= 0.05f;
             }
-            else if (hydralicPowerLeft == 0f) {
+            else if (hydralicPowerLeft < 0f) {
                 isOpen = true;
             }
         }

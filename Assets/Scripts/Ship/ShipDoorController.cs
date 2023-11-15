@@ -6,7 +6,7 @@ public class ShipDoorController : MonoBehaviour
 {
     public bool isOpen = false;
     public float doorSpeed = 2f;
-    public float hydralicPowerLeft = 1000f;
+    public float hydralicPowerLeft = 500f;
     public GameObject openPosition;
     public GameObject closedPosition;
 
@@ -47,7 +47,7 @@ public class ShipDoorController : MonoBehaviour
             }
         }
         else {
-            if (hydralicPowerLeft < 1000f){
+            if (hydralicPowerLeft < 500f){
                 hydralicPowerLeft += 0.1f;
             }
         }

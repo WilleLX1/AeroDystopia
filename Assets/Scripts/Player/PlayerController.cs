@@ -166,23 +166,15 @@ public class PlayerController : MonoBehaviour
         // Rotate the entire player object (including the camera) around the Y-axis
         transform.Rotate(Vector3.up * mouseX);
     }
-
+    
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Spaceship"))
-        {
-            // Transfer control to the spaceship
-            
-        }
+        
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Spaceship"))
-        {
-            // Return control to the player
-            
-        }
+        
     }
 
 }
